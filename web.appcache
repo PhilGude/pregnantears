@@ -1,0 +1,9 @@
+CACHE MANIFEST
+#version 1.0.0
+
+index.html
+assets/js/base64-binary.js
+assets/js/1.js
+
+NETWORK:
+*
