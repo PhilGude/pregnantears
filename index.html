@@ -18,52 +18,12 @@
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link href="assets/css/main.css" rel="stylesheet">    
-	<!--script src='assets/js/AudioContext.js'></script-->
 	<link rel="stylesheet" type="text/css" href="assets/css/AudioContext.css">
-	<script src="assets/js/base64-binary.js"></script>
-	<script src="assets/js/1.js"></script>
+
   <!-- IE Fix for HTML5 Tags -->
   <!--[if lt IE 9]>
     <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
   <![endif]-->    
-<script>
-var myAudioContext, mySource, myBuffer;
-
-if ('AudioContext' in window) {
-	myAudioContext = new AudioContext();
-} else if ('webkitAudioContext' in window) {
-	myAudioContext = new webkitAudioContext();
-} else {
-	alert('Your browser does not support yet Web Audio API');
-}
-
-function play () {
-
-	mySource = myAudioContext.createBufferSource();
-	mySource.buffer = myBuffer;
-	mySource.connect(myAudioContext.destination);
-
-	if ('AudioContext' in window) {
-		mySource.start(0);
-	} else if ('webkitAudioContext' in window) {
-		mySource.noteOn(0);
-	} 
-	
-}
-
-var load = (function (url) {
-
-	var arrayBuff = Base64Binary.decodeArrayBuffer(sound);
-
-	myAudioContext.decodeAudioData(arrayBuff, function(audioData) {
-		myBuffer = audioData;
-	});
-	
-}());
-
-</script>
-
-
 </head>
 <body>
 
@@ -98,7 +58,8 @@ var load = (function (url) {
 			<div class="row span6 center">
 					<h1>{ Releasing the Song Appollo Hang }</h1>
 				<p>A very deep and emotional song crafted with a hang drum tuned on the mythic Hijazz tune.. Available on your favorite store.</p>
-				<button onClick="play();" style="height: 44px; width: 75px;">Play</button>
+				<button style="height: 44px; width: 75px;" onclick="play();">Play</button>
+				<button style="height: 44px; width: 75px;" onclick="stop();">Stop</button>
 			</div>	
 		</div>
 	</div>
@@ -294,5 +255,57 @@ $(function () {
             
 });
 </script>
+<script src="assets/js/1.js"></script>
+<script src="assets/js/base64-binary.js"></script>
+<!--script src='assets/js/AudioContext.js'></script-->
+<script>
+    var myAudioContext,
+	mySource, 
+	myBuffer;
+
+    if ('AudioContext' in window) {
+        myAudioContext = new AudioContext();
+    } else if ('webkitAudioContext' in window) {
+        myAudioContext = new webkitAudioContext();
+    } else {
+        alert('Your browser does not support yet Web Audio API');
+    }
+
+    function play() {
+
+    mySource = myAudioContext.createBufferSource();
+    mySource.buffer = myBuffer;
+    mySource.connect(myAudioContext.destination);
+
+    if ('AudioContext' in window) {
+            mySource.start(0);
+        } else if ('webkitAudioContext' in window) {
+            mySource.noteOn(0);
+        } 
+        
+    }
+
+    function stop() {
+        if (mySource)
+    	{
+        	if ('AudioContext' in window) {
+                mySource.stop(myAudioContext.currentTime);
+        	} 
+        	else if ('webkitAudioContext' in window) {
+                mySource.noteOff(myAudioContext.currentTime);
+        	}
+        }
+    }
+
+    var load = (function (url) {
+
+    var arrayBuff = Base64Binary.decodeArrayBuffer(sound);
+
+    myAudioContext.decodeAudioData(arrayBuff, function(audioData) {
+        myBuffer = audioData;
+    });
+    
+    }());
+	</script>
 </body>
 </html>
