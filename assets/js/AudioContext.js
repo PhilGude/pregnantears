@@ -11,8 +11,9 @@
             context = new AudioContext();
         } else if (typeof webkitAudioContext !== "undefined") {
             context = new webkitAudioContext();
+             alert('Webkit');
         } else {
-            alert('To play music here you will need to browse with Google Chrome');
+            alert('To play music here you will need to browse with a modern browser');
         }
     }
 
@@ -38,11 +39,13 @@
     // Finally: tell the source when to start
     function playSound() {
         // play the source now
+        alert(context.currentTime);
         soundSource.noteOn(context.currentTime);
     }
 
     function stopSound() {
         // stop the source now
+         alert(context.currentTime);
         soundSource.noteOff(context.currentTime);
     }
 
