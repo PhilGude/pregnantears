@@ -41,14 +41,24 @@
     function playSound() {
         // play the source now
         alert(context.currentTime);
-        unlock();
-        soundSource.noteOn(context.currentTime);
+
+        if ('AudioContext' in window) {
+                soundSource.start(context.currentTime);
+        } 
+        else if ('webkitAudioContext' in window) {
+                soundSource.noteOn(context.currentTime);
+        } 
     }
 
     function stopSound() {
         // stop the source now
-         alert(context.currentTime);
-        soundSource.noteOff(context.currentTime);
+        alert(context.currentTime);
+        if ('AudioContext' in window) {
+                soundSource.stop(context.currentTime);
+        } 
+        else if ('webkitAudioContext' in window) {
+                soundSource.noteOff(context.currentTime);
+        }
     }
 
 
@@ -76,7 +86,7 @@
         // Events for the play/stop bottons
         document.querySelector('.play').addEventListener('click', startSound);
         document.querySelector('.stop').addEventListener('click', stopSound);
-        window.addEventListener('touchstart', function() {
+/*        window.addEventListener('touchstart', function() {
 
             // create empty buffer
             var buffer = myContext.createBuffer(1, 1, 22050);
@@ -89,32 +99,32 @@
             // play the file
             source.noteOn(0);
 
-            }, false);
+            }, false);*/
     }   
 
     //http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
-    var isUnlocked = false;
-    function unlock() {
+    // var isUnlocked = false;
+    // function unlock() {
             
-        if(isIOS || this.unlocked)
-            return;
+    //     if(isIOS || this.unlocked)
+    //         return;
 
-        // create empty buffer and play it
-        var buffer = myContext.createBuffer(1, 1, 22050);
-        var source = myContext.createBufferSource();
-        source.buffer = buffer;
-        source.connect(myContext.destination);
-        source.noteOn(0);
+    //     // create empty buffer and play it
+    //     var buffer = myContext.createBuffer(1, 1, 22050);
+    //     var source = myContext.createBufferSource();
+    //     source.buffer = buffer;
+    //     source.connect(myContext.destination);
+    //     source.noteOn(0);
 
-        // by checking the play state after some time, we know if we're really unlocked
-        setTimeout(function() {
-            if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
-                isUnlocked = true;
-                alert('unlocked');
-            }
-        }, 0);
+    //     // by checking the play state after some time, we know if we're really unlocked
+    //     setTimeout(function() {
+    //         if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
+    //             isUnlocked = true;
+    //             alert('unlocked');
+    //         }
+    //     }, 0);
 
-}
+    //}
 
 
 }());
