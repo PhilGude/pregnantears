@@ -76,6 +76,7 @@
         document.querySelector('.play').addEventListener('click', startSound);
         document.querySelector('.stop').addEventListener('click', stopSound);
         window.addEventListener('touchstart', function() {
+            alert('touchstart');
 
             // create empty buffer
             var buffer = myContext.createBuffer(1, 1, 22050);
