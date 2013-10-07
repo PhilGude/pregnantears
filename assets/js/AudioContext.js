@@ -11,7 +11,8 @@
             context = new AudioContext();
         } else if (typeof webkitAudioContext !== "undefined") {
             context = new webkitAudioContext();
-             alert('Webkit');
+             alert("Webkit");
+             //unlock();
         } else {
             alert('To play music here you will need to browse with a modern browser');
         }
@@ -68,13 +69,39 @@
         playSound(soundSource);
     }
 
-window.onload = function() {
-    init();
-    // Events for the play/stop bottons
-    document.querySelector('.play').addEventListener('click', startSound);
-    document.querySelector('.stop').addEventListener('click', stopSound);
 
-}
+    window.onload = function() {
+        init();
+        // Events for the play/stop bottons
+        document.querySelector('.play').addEventListener('click', startSound);
+        document.querySelector('.stop').addEventListener('click', stopSound);
+        unlock();
+    }   
+
+    //Step 1.5 unlock the auido context for IOS devices
+    //http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
+    var isUnlocked = false;
+    function unlock() {
+                
+        if(isIOS || this.isUnlocked)
+            alert('Unlocked');
+        return;
+
+        // create empty buffer and play it
+        var buffer = myContext.createBuffer(1, 1, 22050);
+        var source = myContext.createBufferSource();
+        source.buffer = buffer;
+        source.connect(myContext.destination);
+        source.noteOn(0);
+
+        // by checking the play state after some time, we know if we're really unlocked
+        setTimeout(function() {
+            if((source.playbackState === source.PLAYING_STATE || source.playbackState === source.FINISHED_STATE)) {
+                isUnlocked = true;
+            }
+        }, 0);
+
+    }
 
 
 }());
