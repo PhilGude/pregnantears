@@ -75,17 +75,30 @@
         // Events for the play/stop bottons
         document.querySelector('.play').addEventListener('click', startSound);
         document.querySelector('.stop').addEventListener('click', stopSound);
-        unlock();
+        window.addEventListener('touchstart', function() {
+
+            // create empty buffer
+            var buffer = myContext.createBuffer(1, 1, 22050);
+            var source = myContext.createBufferSource();
+            source.buffer = buffer;
+
+            // connect to output (your speakers)
+            source.connect(myContext.destination);
+
+            // play the file
+            source.noteOn(0);
+
+            }, false);
     }   
 
-    //Step 1.5 unlock the auido context for IOS devices
     //http://paulbakaus.com/tutorials/html5/web-audio-on-ios/
     var isUnlocked = false;
     function unlock() {
                 
-        if(isIOS || this.isUnlocked)
+        if(isIOS || this.unlocked)
             alert('Unlocked');
         return;
+
 
         // create empty buffer and play it
         var buffer = myContext.createBuffer(1, 1, 22050);
@@ -100,7 +113,7 @@
                 isUnlocked = true;
             }
         }, 0);
-
+        alert(isUnlocked);
     }
 
 
